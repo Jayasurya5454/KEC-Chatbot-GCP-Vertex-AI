@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Kongu Engineering College</title>
+    <style>
+        /* Add a gradient background to the header */
+header {
+    background: linear-gradient(to right, #007bff, #00bfff);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Apply hover effect to navigation links */
+nav a:hover {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* Add a subtle box shadow to buttons */
+.btn {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    height:32px;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Use a custom font for the entire body */
+body {
+    font-family: 'Roboto', sans-serif;            align-content: center;
+
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            align-content: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background-color: #e9ecef;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+    /* Custom styles */
+    body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .chat-container {
+        display: none; /* Initially hide the chat container */
+        position: fixed;
+        bottom: 20px;
+        right: 40px; /* Adjusted right margin */
+        max-width: 370px;
+        border-radius: 1px;
+        overflow: hidden;
+        z-index: 1000; /* Ensure the chat appears above other content */
+        animation: slideInRight 0.5s ease-out; /* Add animation for opening the chat */
+    }
+
+    @keyframes slideInRight {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    .chat-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .chat-box {
+        height: 300px; /* Reduced height for better visibility */
+        overflow-y: scroll;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .chat-message {
+        padding: 5px; /* Reduced padding */
+        margin-bottom: 5px; /* Reduced margin */
+        border-radius: 5px;
+        max-width: 80%;
+        word-wrap: break-word;
+        animation: fadeIn 0.4s ease; /* Add animation for message appearance */
+        font-size: 14px; /* Reduced font size */
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .user-message {
+        float: right;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .bot-message {
+        float: left;
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .input-group {
+        border-top: 1px solid #ccc;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .input-group-prepend .btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .input-group-append .btn {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .btn-primary {
+        background-color: #f7f8fa;
+        border-color: #f5f6f7;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: none;
+    }
+
+    /* Chatbot icon styles */
+    .chatbot-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        cursor: pointer;
+        z-index: 1000; /* Ensure the icon appears above other content */
+    }
+
+    /* Cancel icon styles */
+    .cancel-icon {
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    /* Oval-shaped input box */
+    .form-control {
+        border-radius: 20px; /* Adjust the border-radius value to make it more or less oval */
+        padding: 15px; /* Increase padding */
+        font-size: 16px; /* Increase font size */
+    }
+
+    /* Responsive styles */
+    @media (max-width: 576px) {
+        .chat-container {
+            max-width: 100%;
+            width: 100%;
+            border-radius: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .chat-box {
+            height: 200px;
+        }
+
+        .chat-message {
+            max-width: 90%;
+        }
+
+        .input-group {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group-append .btn {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="top-container-fluid" style="padding-bottom:3px; " >
+        <div class="row">
+            <div class="col-md-5" >
+                     <img src="https://kongu.ac.in/images/header2021.png" class="img-fluid">
+            </div>
+        <div class="col-md-6">
+            <div class="d-none d-lg-inline">
+                
+                <ul class="nav justify-content-end ">
+
+                <li class="nav-item">
+                <a class="nav-link " href="#">TBI@KEC</a>
+                </li>
+                
+                <li class="nav-item">
+                <a class="nav-link" href="#">R&D</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">COE</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link " href="#">FACULTY PROFILE</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/circle-linkedin-512.png" width="30" height="20"><br>
+                    </a>
+                </li><br>
+
+                <li class="nav-item">
+                    <a href="#">
+                        <img src="https://cdn.mos.cms.futurecdn.net/z3bn6deaxmrjmQHNEkpcZE-1200-80.jpg" width="30" height="20"><br>
+                    </a>
+                </li><br>
+                
+                <li class="nav-item">
+                    <a href="#">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png" width="30" height="20"><br>
+                    </a>
+                </li><br>
+
+                <li class="nav-item">
+                    <a href="#">
+                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/514/original/instagram-logo-instagram-logo-transparent-instagram-icon-transparent-free-free-png.png" width="30" height="20"><br>
+                    </a>
+                </li><br>
+
+                <li class="nav-item">
+                    <a href="#">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbrhFx74DljNqeDaF3EA-JY6chvoYE_zIjFk877-gApg&s" width="30" height="20">
+                    </a>
+                </li>
+
+                </ul>
+            </div>    
+        </div>
+    
+        </div>
+    </div>
+
+    
+
+    <div class="header" id="mynav">
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark" style="background-color:#16336d; color:white;">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About Us</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                            <li><a class="dropdown-item" href="#">About KEC</a></li>
+                            <li><a class="dropdown-item" href="#">Vision Mission & Quality Policy</a></li>
+                            <li><a class="dropdown-item" href="#">KVITT Office Bearers</a></li>
+                            <li><a class="dropdown-item" href="#">Head of the Institution</a></li>
+                            <li><a class="dropdown-item" href="#">Governing Council</a></li>
+                            <li><a class="dropdown-item" href="#">Academic Council</a></li>
+                            <li><a class="dropdown-item" href="#">University Ranks</a></li>
+                            <li><a class="dropdown-item" href="#">Endowments</a></li>
+                            <li><a class="dropdown-item" href="#">College Rules</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Programmes</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <li><a class="dropdown-item" href="#">Undergraduate</a></li>
+                            <li><a class="dropdown-item" href="#">Postgraduate</a></li>
+                            <li><a class="dropdown-item" href="#">Applied Sciences</a></li>
+                            <li><a class="dropdown-item" href="#">Doctoral Programmes</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departments</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                            <li><a class="dropdown-item dropdown-toggle" href="#">Engineering</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Civil Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Mechanical Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Mechatronics Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Automobile Engineering </a></li>
+                                    <li><a class="dropdown-item" href="#">Chemical Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Food Technology</a></li>
+                                    <li><a class="dropdown-item" href="#">Electrical and Electronics Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Electronics and Instrumentation Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Electronics and Communication Engineering</a></li>
+                                    <li><a class="dropdown-item" href="#">Computer Science and Engineering</a></li>                                  
+                                    <li><a class="dropdown-item" href="#">Information Technology</a></li>
+                                    <li><a class="dropdown-item" href="#">Computer Science and Design</a></li>
+                                    <li><a class="dropdown-item" href="#">Artificial Intelligence (AIML & AIDS)</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Management Studies</a></li>
+                            <li><a class="dropdown-item" href="#">Computer Application</a></li>
+                            <li><a class="dropdown-item" href="#">Computer Technology</a></li>
+                            <li><a class="dropdown-item" href="#">Science and Humanities</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accreditation</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink4">
+                            <li><a class="dropdown-item" href="#">Autonomous</a></li>
+                            <li><a class="dropdown-item" href="#">University</a></li>
+                            <li><a class="dropdown-item" href="#">NBA</a></li>
+                            <li><a class="dropdown-item" href="#">NAAC</a></li>
+                            <li><a class="dropdown-item" href="#">NIRF</a></li>
+                            <li><a class="dropdown-item" href="#">AICTE E&T</a></li>
+                            <li><a class="dropdown-item" href="#">AICTE MCA</a></li>
+                            <li><a class="dropdown-item" href="#">AICTE MBA</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Facilities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Academic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">COE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">R&D</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">IEF</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Placement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">IIPC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Alumni</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Online Payment</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Careers</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink5">
+                            <li><a class="dropdown-item" href="#">Teaching</a></li>
+                            <li><a class="dropdown-item" href="#">Non Teaching</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    
+
+    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://kongu.ac.in/carousel/images/nirf_New.gif" alt="NIRF Ranking 2022" class="d-block w-100">
+            </div>
+            <div class="carousel-item">
+                <img src="https://kongu.ac.in/carousel/images/SIH_Winners_SW.jpg" alt="Smart India Hackathon Winners" class="d-block w-100">
+            </div>
+            <div class="carousel-item">
+                <img src="https://kongu.ac.in/carousel/images/conventioncentre.jpg" alt="Convention Centre" class="d-block w-100">
+            </div>
+            <div class="carousel-item">
+                <img src="https://kongu.ac.in/carousel/images/ariia_2022.jpg" alt="ARIIA 2022" class="d-block w-100">
+            </div>
+            <div class="carousel-item">
+                <img src="https://kongu.ac.in/carousel/images/graduationDay22.jpg" alt="Graduation Day 2022" class="d-block w-100">
+            </div>
+            <div class="carousel-item">
+                <img src="https://kongu.ac.in/carousel/images/placement_1.jpg" alt="Placement" class="d-block w-100">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    
+
+    <div class="row" style="border-radius: 10px;">
+
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;" >
+            <div class="box">
+                <div class="our-services settings">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/placement.png"> </div>
+                    <h4>Placement</h4>
+                     
+                </div>
+            </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;">
+            <div class="box">
+                <div class="our-services speedup">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/ranking.png"> </div>
+                    <h4>Ranking</h4>
+                
+                </div>
+            </div>
+        </a>
+        </div>
+        
+        
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;">
+            <div class="box">
+                <div class="our-services privacy">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/achievements.png"> </div>
+                    <h4>Achievements</h4>
+                   
+                </div>
+            </div>
+            </a>
+        </div>
+        
+        </div>
+        <div class="row">
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;">
+            <div class="box">
+                <div class="our-services backups">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/awards.png"> </div>
+                    <h4>Awards</h4>
+                   
+                </div>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;">
+            <div class="box">
+                <div class="our-services ssl">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/recent_updates.png"> </div>
+                    <h4>Recent Updates</h4>
+                
+                </div>
+            </div>
+            </a>
+        </div>
+        
+        <div class="col-md-4">
+        <a href="#" style="text-decoration:none;">
+            <div class="box">
+                <div class="our-services database">
+                    <div class="icon"> <img src="https://kongu.ac.in/images/news.png"> </div>
+                    <h4>News Paper Clippings</h4>
+                
+                </div>
+            </div>
+        </div>
+        </a>
+        </div>
+
+    </div>
+
+
+    
+    <footer>
+        <div class="row">
+            <div class="col">
+                <h2>About Us</h2>
+                <p>Insert information about your college here.</p>
+            </div>
+            <div class="col">
+                <h2>Programs</h2>
+                <p>Explore our diverse range of academic programs.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Admissions</h2>
+                <p>Information about admissions process, requirements, and deadlines.</p>
+            </div>
+            <div class="col">
+                <h2>Contact Us</h2>
+                <p>Contact information for inquiries and assistance.</p>
+            </div>
+        </div>
+        <p>&copy; 2024 KEC. All rights reserved.</p>
+    </footer>
+    
+    
+    
+ <!-- Chatbot icon -->
+ <div class="chatbot-icon" id="chatbot-icon" onclick="toggleChat()">
+    <span>&#128172;</span> <!-- You can replace this with your desired chatbot icon -->
+</div>
+
+<!-- Chat container -->
+<div class="container chat-container" id="chat-container">
+    <!-- Chat header -->
+    <div class="chat-header">
+        <h4>ChatGPT Bot</h4>
+    </div>
+    <!-- Cancel icon -->
+    <div class="cancel-icon" onclick="toggleChat()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <div class="chat-box" id="chat-box">
+        <!-- Chat messages will be dynamically added here -->
+    </div>
+    <div class="input-group">
+        <div >
+            <input type="text" class="form-control" id="user-input" placeholder="Type your message..." style="width: 300px;height: 30px;">
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" onclick="sendMessageAndUpdateChat()">
+                <img src="https://static-00.iconduck.com/assets.00/send-icon-2048x1863-u8j8xnb6.png" style="width: 20px; height: 25px;">
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Bootstrap JS (optional, only needed if you're using Bootstrap JavaScript components) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function sendMessageAndUpdateChat() {
+            var userInput = document.getElementById("user-input").value.trim();
+            if (userInput !== "") {
+                var chatBox = document.getElementById("chat-box");
+                var userMessage = '<div class="chat-message user-message">' + userInput + '</div>';
+                chatBox.innerHTML += userMessage;
+                document.getElementById("user-input").value = ""; // Clearing the input field after sending the message
+                
+                // Send message to Flask backend
+                fetch('/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'user_input=' + encodeURIComponent(userInput)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Message sent successfully');
+                        return response.text();
+                    } else {
+                        console.error('Message sending failed');
+                        throw new Error('Message sending failed');
+                    }
+                })
+                .then(data => {
+                    var botMessage = '<div class="chat-message bot-message">' + data + '</div>';
+                    chatBox.innerHTML += botMessage;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    
+        // Function to send message when Enter key is pressed
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessageAndUpdateChat();
+            }
+        });
+    
+        function toggleChat() {
+            var chatContainer = document.getElementById("chat-container");
+            var chatbotIcon = document.getElementById("chatbot-icon");
+            if (chatContainer.style.display === "none") {
+                chatContainer.style.display = "block";
+                chatbotIcon.style.display = "none"; // Hide the chatbot icon when chat is open
+            } else {
+                chatContainer.style.display = "none";
+                chatbotIcon.style.display = "block"; // Show the chatbot icon when chat is closed
+            }
+        }
+    </script>
+    
+</body>
+</html>
